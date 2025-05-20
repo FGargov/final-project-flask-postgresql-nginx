@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results - Athena Web Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Results for {{ quiz.title }}</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Score</th>
+                    <th>Total Questions</th>
+                    <th>Percentage</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>{{ result.user_name }}</td>
+                    <td>{{ result.score }}</td>
+                    <td>{{ result.total_questions }}</td>
+                    <td>{{ (result.score / result.total_questions * 100) if result.total_questions > 0 else 0 }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url_for('index') }}">Back to Home</a>
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html> 

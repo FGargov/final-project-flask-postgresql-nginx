@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Athena Web Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Athena Web Quiz</h1>
+        <p>A lightweight app to create and take quizzes, focusing on wisdom and knowledge.</p>
+        <div class="nav-buttons">
+            <a href="{{ url_for('create_quiz') }}" class="button">Create New Quiz</a>
+        </div>
+        <h2>Available Quizzes</h2>
+        {% if quizzes %}
+        <ul class="quiz-list">
+            {% for quiz in quizzes %}
+            <li>
+                <h3>{{ quiz.title }}</h3>
+                <p>{{ quiz.description }}</p>
+                <a href="{{ url_for('take_quiz', quiz_id=quiz.id) }}" class="button">Take Quiz</a>
+                <a href="{{ url_for('view_results', quiz_id=quiz.id) }}" class="button">View Results</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No quizzes available. Create one to get started!</p>
+        {% endif %}
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html> 

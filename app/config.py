@@ -3,7 +3,9 @@ import os
 
 def get_database_url():
     """
-    Returns the database URL from environment variables.
-    See: https://12factor.net/config
+    Get the database URL from environment variables or use a default SQLite database for local development.
+    For Docker Compose, set DATABASE_URL to point to PostgreSQL.
     """
-    return os.environ.get("DATABASE_URL", "postgresql://postgres:postgres@db:5432/starterdb")
+    return os.getenv('DATABASE_URL', 'sqlite:///app.db')
+
+# Additional configuration can be added here as needed

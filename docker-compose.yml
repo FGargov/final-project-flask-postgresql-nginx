@@ -1,2 +1,35 @@
-# TODO: Implement this docker-compose.yml to orchestrate Flask, Postgres, and NGINX
-# See: https://docs.docker.com/compose/ 
+# docker-compose.yml for Athena Web Quiz
+# TODO: Complete this file to orchestrate the Flask app, PostgreSQL database, and NGINX reverse proxy
+# 1. Define a service for the Flask app
+# 2. Define a service for PostgreSQL with environment variables for database configuration
+# 3. Define a service for NGINX as a reverse proxy
+# 4. Set up volumes for persistent database storage
+# 5. Configure networks for communication between services
+# Example:
+# services:
+#   app:
+#     build: .
+#     ports:
+#       - "5000:5000"
+#     environment:
+#       - DATABASE_URL=postgresql://user:password@db:5432/athena_quiz
+#     depends_on:
+#       - db
+#   db:
+#     image: postgres:13
+#     environment:
+#       - POSTGRES_USER=user
+#       - POSTGRES_PASSWORD=password
+#       - POSTGRES_DB=athena_quiz
+#     volumes:
+#       - db_data:/var/lib/postgresql/data
+#   nginx:
+#     image: nginx:latest
+#     ports:
+#       - "80:80"
+#     volumes:
+#       - ./nginx:/etc/nginx/conf.d
+#     depends_on:
+#       - app
+# volumes:
+#   db_data:
