@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_migrate import Migrate
+import os
 
 from .config import get_database_url
 from .models import db, Quiz, Question, Answer, Result
@@ -7,6 +8,7 @@ from .models import db, Quiz, Question, Answer, Result
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = get_database_url()
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -17,6 +19,7 @@ with app.app_context():
     # Optionally, populate sample data if the database is empty
     if Quiz.query.count() == 0:
         from .sample_data import populate_sample_data
+
         populate_sample_data()
 
 
@@ -50,7 +53,9 @@ def add_question(quiz_id):
         correct = request.form.get("correct")
         for i, answer_text in enumerate(answers):
             if answer_text:
-                answer = Answer(text=answer_text, question_id=question.id, is_correct=(str(i) == correct))
+                answer = Answer(
+                    text=answer_text, question_id=question.id, is_correct=(str(i) == correct)
+                )
                 db.session.add(answer)
         db.session.commit()
         if "add_another" in request.form:
@@ -72,7 +77,9 @@ def take_quiz(quiz_id):
                 answer = Answer.query.get(answer_id)
                 if answer and answer.is_correct:
                     score += 1
-        result = Result(quiz_id=quiz_id, user_name=user_name, score=score, total_questions=total_questions)
+        result = Result(
+            quiz_id=quiz_id, user_name=user_name, score=score, total_questions=total_questions
+        )
         db.session.add(result)
         db.session.commit()
         return redirect(url_for("view_results", quiz_id=quiz_id))
