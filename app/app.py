@@ -2,8 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_migrate import Migrate
 import os
 
-from .config import get_database_url
-from .models import db, Quiz, Question, Answer, Result
+from config import get_database_url
+from models import db, Quiz, Question, Answer, Result
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = get_database_url()
@@ -18,7 +18,7 @@ with app.app_context():
     db.create_all()
     # Optionally, populate sample data if the database is empty
     if Quiz.query.count() == 0:
-        from .sample_data import populate_sample_data
+        from sample_data import populate_sample_data
 
         populate_sample_data()
 
