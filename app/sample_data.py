@@ -1,7 +1,8 @@
 # Sample quiz app data for guidance only.
 # Use this as a reference for your own seed/test data.
 
-from .models import db, Quiz, Question, Answer
+from models import db, Quiz, Question, Answer
+
 
 def populate_sample_data():
     """Populate the database with sample quiz data for dev/testing."""
@@ -12,7 +13,9 @@ def populate_sample_data():
     db.session.commit()
 
     # Sample Quiz 1: General Knowledge
-    quiz1 = Quiz(title="General Knowledge", description="Test your general knowledge with this quiz.")
+    quiz1 = Quiz(
+        title="General Knowledge", description="Test your general knowledge with this quiz."
+    )
     db.session.add(quiz1)
     db.session.commit()
 
@@ -35,6 +38,7 @@ def populate_sample_data():
     # Commit all changes
     db.session.commit()
     print("Sample data populated: 1 quiz with 2 questions.")
+
 
 sample_quizzes = [
     {"id": 1, "title": "General Knowledge"},
