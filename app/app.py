@@ -15,12 +15,18 @@ migrate = Migrate(app, db)
 
 # Initialize database schema on startup
 with app.app_context():
+    print("APP: Before db.create_all()")
     db.create_all()
-    # Optionally, populate sample data if the database is empty
-    if Quiz.query.count() == 0:
+    print("APP: After db.create_all()")
+    quiz_count = Quiz.query.count()
+    print(f"APP: Quiz count before populating: {quiz_count}")
+    if quiz_count == 0:
+        print("APP: Condition Quiz.query.count() == 0 is TRUE. Importing sample_data...")
         from sample_data import populate_sample_data
 
         populate_sample_data()
+    else:
+        print("APP: Condition Quiz.query.count() == 0 is FALSE. Skipping sample_data.")
 
 
 @app.route("/")
