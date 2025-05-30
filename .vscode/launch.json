@@ -6,7 +6,7 @@
       "type": "python",
       "request": "launch",
       "module": "pytest",
-      "args": ["tests/"],
+      "args": ["tests/", "app/"],
       "console": "integratedTerminal",
       "justMyCode": false
     }
