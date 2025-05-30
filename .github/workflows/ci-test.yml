@@ -1,36 +1,53 @@
-# # Minimal CI workflow for Flask + Postgres
-# # See: https://docs.github.com/en/actions/guides/building-and-testing-python
-# name: CI Test
+# Minimal CI workflow for Flask + Postgres
+# See: https://docs.github.com/en/actions/guides/building-and-testing-python
+name: CI Test
 
-# on:
-#   push:
-#     branches: [main, dev]
-#   pull_request:
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+      - 'feature/**'
+  push:
+    branches:
+      - main
+      - dev
+      - 'feature/**'
 
-# jobs:
-#   test:
-#     runs-on: ubuntu-latest
-#     services:
-#       postgres:
-#         image: postgres:15
-#         env:
-#           POSTGRES_USER: postgres
-#           POSTGRES_PASSWORD: postgres
-#           POSTGRES_DB: starterdb
-#         ports:
-#           - 5432:5432
-#         options: >-
-#           --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-#     env:
-#       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/starterdb
-#     steps:
-#       - uses: actions/checkout@v4
-#       - name: Set up Python
-#         uses: actions/setup-python@v5
-#         with:
-#           python-version: "3.11"
-#       - name: Install dependencies
-#         run: |
-#           pip install -r app/requirements.txt
-#       - name: Run tests
-#         run: pytest
+jobs:
+  build_and_test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres_user
+          POSTGRES_PASSWORD: postgres_pass
+          POSTGRES_DB: postgres_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      DATABASE_URL: postgresql://postgres_user:postgres_pass@localhost:5432/postgres_db
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r app/requirements.txt
+          pip install flake8
+        
+      - name: Run lint
+        run: |
+          flake8 app tests
+
+      - name: Run tests
+        run: pytest tests/ -v
