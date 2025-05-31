@@ -1,4 +1,4 @@
-from models import Quiz, db
+from app.models import Quiz, db
 
 
 def test_homepage(client):
