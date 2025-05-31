@@ -60,7 +60,7 @@ jobs:
           flake8 app tests
           
       - name: Show Docker logs
-        run: docker compose logs web
+        run: docker compose logs flask_app
 
       - name: Wait for services to start and to be healthy
         uses: jaracogmbh/docker-compose-health-check-action@v1.0.0
