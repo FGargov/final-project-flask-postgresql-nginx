@@ -25,7 +25,7 @@ with app.app_context():
             "APP: Condition Quiz.query.count() == 0 is TRUE. "
             "Importing sample_data..."
         )
-        from sample_data import populate_sample_data
+        from app.sample_data import populate_sample_data
 
         populate_sample_data()
     else:
