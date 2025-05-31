@@ -1,4 +1,4 @@
-from models import Quiz, Question, Answer, Result, db
+from models import Quiz, db
 
 
 def test_homepage(client):
