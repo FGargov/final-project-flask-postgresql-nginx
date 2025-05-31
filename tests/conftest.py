@@ -1,6 +1,6 @@
 import pytest
 import os
-import sys
+
 
 from app.app import app as flask_app
 from app.models import db
