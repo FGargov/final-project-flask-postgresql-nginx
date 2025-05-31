@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
-from flask_migrate import Migrate
 import os
 
+from flask import Flask, render_template, request, redirect, url_for
+from flask_migrate import Migrate
 from config import get_database_url
 from models import db, Quiz, Question, Answer, Result
 
@@ -22,13 +22,14 @@ with app.app_context():
     print(f"APP: Quiz count before populating: {quiz_count}")
     if quiz_count == 0:
         print(
-            "APP: Condition Quiz.query.count() == 0 is TRUE. Importing sample_data..."
+            "APP: Condition Quiz.query.count() == 0 is TRUE. "
+            "Importing sample_data..."
         )
         from sample_data import populate_sample_data
 
         populate_sample_data()
     else:
-        print("APP: Condition Quiz.query.count() == 0 is FALSE. Skipping sample_data.")
+        print("APP: Condition Quiz.query.count() == 0 is FALSE. ")
 
 
 @app.route("/")
