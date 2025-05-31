@@ -1,0 +1,55 @@
+name: CD - Build and Push Docker Image to Docker Hub
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-push-image:
+    name: Build and Push to Docker Hub
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }} 
+
+      - name: Read version from VERSION file
+        id: version_reader
+        run: |
+          echo "VERSION_TAG=$(cat VERSION)" >> $GITHUB_OUTPUT
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/athena-web-quiz 
+          tags: |
+            type=raw,value=${{ steps.version_reader.outputs.VERSION_TAG }}
+            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/v') }} 
+
+
+      - name: Build and push Docker image to Docker Hub
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Echo image details
+        run: |
+          echo "Image pushed to Docker Hub: ${{ secrets.DOCKERHUB_USERNAME }}/athena-web-quiz with tags: ${{ steps.meta.outputs.tags }}"
+
+
+        
