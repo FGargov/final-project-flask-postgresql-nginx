@@ -2,11 +2,11 @@ import pytest
 import os
 import sys
 
-from app import app as flask_app
-from models import db
+from app.app import app as flask_app
+from app.models import db
 
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../app")))
+# sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../app")))
 os.environ["DATABASE_URL"] = "sqlite:///:memory:"
 
 
