@@ -21,7 +21,9 @@ with app.app_context():
     quiz_count = Quiz.query.count()
     print(f"APP: Quiz count before populating: {quiz_count}")
     if quiz_count == 0:
-        print("APP: Condition Quiz.query.count() == 0 is TRUE. Importing sample_data...")
+        print(
+            "APP: Condition Quiz.query.count() == 0 is TRUE. Importing sample_data..."
+        )
         from sample_data import populate_sample_data
 
         populate_sample_data()
@@ -60,7 +62,9 @@ def add_question(quiz_id):
         for i, answer_text in enumerate(answers):
             if answer_text:
                 answer = Answer(
-                    text=answer_text, question_id=question.id, is_correct=(str(i) == correct)
+                    text=answer_text,
+                    question_id=question.id,
+                    is_correct=(str(i) == correct),
                 )
                 db.session.add(answer)
         db.session.commit()
@@ -84,7 +88,10 @@ def take_quiz(quiz_id):
                 if answer and answer.is_correct:
                     score += 1
         result = Result(
-            quiz_id=quiz_id, user_name=user_name, score=score, total_questions=total_questions
+            quiz_id=quiz_id,
+            user_name=user_name,
+            score=score,
+            total_questions=total_questions,
         )
         db.session.add(result)
         db.session.commit()
@@ -95,7 +102,9 @@ def take_quiz(quiz_id):
 @app.route("/results/<int:quiz_id>")
 def view_results(quiz_id):
     quiz = Quiz.query.get_or_404(quiz_id)
-    results = Result.query.filter_by(quiz_id=quiz_id).order_by(Result.score.desc()).all()
+    results = (
+        Result.query.filter_by(quiz_id=quiz_id).order_by(Result.score.desc()).all()
+    )
     return render_template("results.html", quiz=quiz, results=results)
 
 
