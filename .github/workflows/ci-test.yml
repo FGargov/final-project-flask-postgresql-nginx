@@ -30,11 +30,10 @@ jobs:
           - 5432:5432
         options: >-
           --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-    env:
-      DATABASE_URL: ${DATABASE_URL}
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set PYTHONPATH
         run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)/app" >> $GITHUB_ENV
 
@@ -46,7 +45,7 @@ jobs:
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
           echo "FLASK_APP=${{ vars.FLASK_APP }}" >> .env
           echo "FLASK_ENV=${{ vars.FLASK_ENV }}" >> .env
-          echo "DATABASE_URL=postgresql://${{ vars.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@db:5432/${{ vars.POSTGRES_DB }}" >> .env
+          echo "DATABASE_URL=postgresql://${{ vars.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@postgres:5432/${{ vars.POSTGRES_DB }}" >> .env
       
       - name: Set up Python
         uses: actions/setup-python@v5
