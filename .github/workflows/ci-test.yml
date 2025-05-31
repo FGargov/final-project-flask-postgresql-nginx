@@ -23,9 +23,9 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_USER: postgres_user
-          POSTGRES_PASSWORD: postgres_pass
-          POSTGRES_DB: postgres_db
+            POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+            POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+            POSTGRES_DB: ${{ vars.POSTGRES_DB }}
         ports:
           - 5432:5432
         options: >-
@@ -35,7 +35,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set PYTHONPATH
-        run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)/app" >> $GITHUB_ENV
+        run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
 
       - name: Create .env file
         run: |
@@ -60,18 +60,6 @@ jobs:
       - name: Run lint
         run: |
           flake8 app tests
-          
-      - name: Show Docker logs
-        run: docker compose logs flask_app
-
-      - name: Wait for services to start and to be healthy
-        uses: jaracogmbh/docker-compose-health-check-action@v1.0.0
-        with:
-         max-retries: 10 
-         retry-interval: 10
-         compose-file: "docker-compose.yml" 
-         skip-exited: "true"
-         skip-no-healthcheck: "true"
 
       - name: Run tests
         run: pytest tests/ -v
