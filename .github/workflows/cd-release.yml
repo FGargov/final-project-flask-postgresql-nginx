@@ -6,7 +6,7 @@ on:
       - 'v*.*.*'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build-and-push-image:
@@ -60,3 +60,13 @@ jobs:
           draft: false
           prerelease: false
  
+
+      - name: Create GitHub Release for Pre-Release
+        id: create_prerelease
+        uses: softprops/action-gh-release@v2
+        if: ${{ contains(github.ref_name, '-') }}
+        with:
+          name: Pre-release ${{ github.ref_name }}
+          generate_release_notes: true 
+          draft: false 
+          prerelease: true 
