@@ -3,7 +3,7 @@ name: CD - Build and Push Docker Image to Docker Hub
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*.*.*'
 
 permissions:
   contents: read
@@ -51,5 +51,12 @@ jobs:
         run: |
           echo "Image pushed to Docker Hub: ${{ secrets.DOCKERHUB_USERNAME }}/athena-web-quiz with tags: ${{ steps.meta.outputs.tags }}"
 
-
-        
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        if: ${{ !contains(github.ref_name, '-') && endsWith(github.ref_name, '.0') }}
+        with:
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+ 
