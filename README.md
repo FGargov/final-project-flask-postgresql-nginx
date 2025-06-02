@@ -145,7 +145,7 @@ This project is a fully functional Flask web application for creating and taking
 -   `.env` (created manually): Local environment variables.
 -   `example.env` (optional): Template for the `.env` file.
 -   `requirements.txt` (in `app/`): Python dependencies.
--   `CONTRIBUTORS.md`: Record of team member contributions.
+
 
 
 
