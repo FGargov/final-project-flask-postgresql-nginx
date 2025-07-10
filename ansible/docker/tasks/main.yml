@@ -1,3 +1,21 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# tasks file for docker
+- name: Check if Docker is already installed
+  ansible.builtin.command: docker --version
+  register: docker_check_command
+  changed_when: false
+  failed_when: false
+
+- name: Install Docker and Docker Compose if not present
+  ansible.builtin.apt:
+    name:
+    - docker.io
+    - docker-compose
+    state: present
+  when: docker_check_command.rc != 0
+
+- name: Ensure Docker service is running and enabled
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: yes
+  when: docker_check_command.rc != 0
