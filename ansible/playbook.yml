@@ -1,0 +1,12 @@
+---
+- name: Deploy Athena Web Quiz App Locally
+  hosts: local_dev
+  become: true
+
+  vars_files:
+  - secrets.yml
+
+  roles:
+  - common
+  - docker
+  - deploy
