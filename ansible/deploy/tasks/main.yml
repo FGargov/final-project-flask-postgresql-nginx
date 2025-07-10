@@ -1,3 +1,18 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# tasks file for deploy
+- name: Clone project repository from Git
+  ansible.builtin.git:
+    repo: "{{ project_repo }}"
+    dest: "{{ project_root }}"
+    version: main
+    force: yes
+
+- name: Generate .env file from template
+  ansible.builtin.template:
+    src: env.j2
+    dest: "{{ project_root }}/.env"
+  notify: Restart Docker Compose
+
+- name: Start the application stack with Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: "{{ project_root }}"
+    state: present
