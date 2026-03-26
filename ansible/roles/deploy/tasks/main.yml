@@ -1,10 +1,14 @@
----
+- name: Check if project directory exists
+  ansible.builtin.stat:
+    path: "{{ project_root }}"
+  register: project_dir_stat
+
 - name: Clone project repository from Git
   ansible.builtin.git:
     repo: "{{ project_repo }}"
     dest: "{{ project_root }}"
     version: main
-    force: yes
+  when: not project_dir_stat.stat.exists
 
 - name: Generate .env file from template
   ansible.builtin.template:
