@@ -2,8 +2,8 @@ import os
 
 from flask import Flask, render_template, request, redirect, url_for
 from flask_migrate import Migrate
-from app.config import get_database_url
-from app.models import db, Quiz, Question, Answer, Result
+from config import get_database_url
+from models import db, Quiz, Question, Answer, Result
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = get_database_url()
@@ -25,7 +25,7 @@ with app.app_context():
             "APP: Condition Quiz.query.count() == 0 is TRUE. "
             "Importing sample_data..."
         )
-        from app.sample_data import populate_sample_data
+        from sample_data import populate_sample_data
 
         populate_sample_data()
     else:
