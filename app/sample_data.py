@@ -1,7 +1,7 @@
 # Sample quiz app data for guidance only.
 # Use this as a reference for your own seed/test data.
 
-from app.models import db, Quiz, Question, Answer
+from models import db, Quiz, Question, Answer
 
 
 def populate_sample_data():
